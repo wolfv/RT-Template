@@ -14,11 +14,12 @@ public:
                         const float max_x,
                         const float min_y,
                         const float max_y,
+                        const glm::ivec2 &resolution,
                         const glm::vec3 &position,
                         const glm::vec3 &up_vector,
                         const glm::vec3 &look_at );
 
-    Ray getWorldSpaceRay( const glm::vec2 &sample_coord ) const;
+    Ray getWorldSpaceRay( const glm::vec2 &pixel_coord ) const;
 
     float min_x_;
 

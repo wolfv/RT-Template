@@ -1,11 +1,13 @@
 #include "camera.h"
 
 Camera::Camera( void )
-{ }
+{}
 
-Camera::Camera( const glm::vec3 &position,
+Camera::Camera( const glm::ivec2 &resolution,
+                const glm::vec3 &position,
                 const glm::vec3 &up,
                 const glm::vec3 &look_at ) :
+        resolution_{ resolution },
         up_{ up },
         look_at_{ look_at },
         position_{ position },
@@ -16,7 +18,7 @@ Camera::Camera( const glm::vec3 &position,
 }
 
 Camera::~Camera( void )
-{ }
+{}
 
 void Camera::setPosition( const glm::vec3 &position )
 {

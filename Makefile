@@ -11,7 +11,7 @@ CXXFLAGS += -DNDEBUG -O3 -g0
 endif
 
 CPPFLAGS += -MMD \
-			-I../../../../../../../work/common/glm-0.9.7.0 \
+			-I../../../../work/common/glm-0.9.7.0 \
 			-I/usr/local/include
 
 LDFLAGS = -L/usr/lib/gcc/x86_64-linux-gnu/4.8 \

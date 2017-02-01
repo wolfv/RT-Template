@@ -14,7 +14,8 @@ public:
 
     Camera( void );
 
-    Camera( const glm::vec3 &position,
+    Camera( const glm::ivec2 &resolution,
+            const glm::vec3 &position,
             const glm::vec3 &up,
             const glm::vec3 &look_at );
 
@@ -26,9 +27,9 @@ public:
 
     void setLookAt( const glm::vec3 &look_at );
 
-    virtual Ray getWorldSpaceRay( const glm::vec2 &sample_coord ) const = 0;
+    virtual Ray getWorldSpaceRay( const glm::vec2 &pixel_coord ) const = 0;
 
-//private:
+    glm::ivec2 resolution_;
 
     glm::vec3 up_{ 0.0f, 1.0f, 0.0f };   // up vector (usually equal to universe Y axis: [0, 1, 0]).
 

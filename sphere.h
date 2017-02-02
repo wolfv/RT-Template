@@ -2,10 +2,11 @@
 #define SPHERE_H_
 
 #include <glm/glm.hpp>
+#include "primitive.h"
 #include "intersection_record.h"
 #include "ray.h"
 
-class Sphere
+class Sphere : public Primitive
 {
 public:
 

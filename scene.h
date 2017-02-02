@@ -7,7 +7,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "sphere.h"
+#include "primitive.h"
+#include "sphere.h" 
 
 class Scene
 {
@@ -22,7 +23,7 @@ public:
 
     void load( void );
 
-    std::vector< Sphere > primitives_;
+    std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
 };
 

@@ -14,7 +14,8 @@ struct Triangle : public Primitive
     Triangle(
         const glm::vec3 &a_,
         const glm::vec3 &b_,
-        const glm::vec3 &c_);
+        const glm::vec3 &c_,
+        const glm::vec3 &color);
     
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
     

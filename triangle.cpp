@@ -1,8 +1,8 @@
 #include "triangle.h"
 #include <cmath>
 
-Triangle::Triangle(const glm::vec3 &a_, const glm::vec3 &b_, const glm::vec3 &c_)
-    : a{a_}, b{b_}, c{c_}
+Triangle::Triangle(const glm::vec3 &a_, const glm::vec3 &b_, const glm::vec3 &c_, const glm::vec3 &color)
+    : Primitive::Primitive{color}, a{a_}, b{b_}, c{c_}
 {}
 
 bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
@@ -22,7 +22,7 @@ bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
     vec3 tvec = ray.origin_ - a;
     float u = glm::dot(tvec, pvec) * inv_det;
     if (u < 0.f || u > 1.f) {
-        return false;
+    return false;
     }
 
     vec3 qvec = glm::cross(tvec, ab);
@@ -32,6 +32,7 @@ bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
     }
 
     ir.t_ = glm::dot(ac, qvec) * inv_det;
+    ir.color = &color;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
     ir.normal_ = glm::normalize(glm::cross(ab, ac));
 

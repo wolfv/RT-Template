@@ -4,11 +4,13 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <string>
 #include <vector>
 #include <glm/glm.hpp>
 
 #include "primitive.h"
 #include "sphere.h" 
+#include "triangle.h"
 
 class Scene
 {
@@ -21,7 +23,7 @@ public:
     bool intersect( const Ray &ray,
                     IntersectionRecord &intersection_record ) const;
 
-    void load( void );
+    void load(const std::string& filename);
 
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 

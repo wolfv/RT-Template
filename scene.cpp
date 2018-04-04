@@ -1,4 +1,8 @@
 #include "scene.h"
+#include <random>
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
 
 Scene::Scene( void )
 {}
@@ -25,11 +29,45 @@ bool Scene::intersect( const Ray &ray,
     return intersection_result;
 }
 
-void Scene::load( void ) 
+void Scene::load(const std::string& filename) 
 {
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.0f, -1.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f,-0.5f, -2.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.5f, -3.0f }, 0.2f } ) );
-}
+#if 1
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
 
+    tinyobj::LoadObj(&attrib, &shapes, nullptr, nullptr, filename.c_str());
+    for (auto &&s : shapes) {
+        size_t index_offset = 0;
+        for (int fv : s.mesh.num_face_vertices) {
+            glm::vec3 vertices[3];
+            for (size_t v = 0; v < (size_t)fv; ++v) {
+                 tinyobj::index_t idx = s.mesh.indices[index_offset + v];
+
+                 tinyobj::real_t vx = attrib.vertices[3*idx.vertex_index+0];
+                 tinyobj::real_t vy = attrib.vertices[3*idx.vertex_index+1];
+                 tinyobj::real_t vz = attrib.vertices[3*idx.vertex_index+2];
+                 vertices[v] = glm::vec3{vx, vy, vz};
+
+            }
+            primitives_.push_back(
+                Primitive::PrimitiveUniquePtr(
+                    new Triangle(vertices[0], vertices[1], vertices[2], glm::vec3(1.f, 1.f, 1.f))
+                )
+            );
+            
+            index_offset += fv;
+        }
+    }
+
+#else
+    std::random_device rd;
+    std::default_random_engine e(rd());
+    std::uniform_real_distribution<float> d(0.f, 1.f);
+
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f, glm::vec3{d(e), d(e), d(e)} } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.0f, -1.0f }, 0.2f, glm::vec3{d(e), d(e), d(e)} } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f,-0.5f, -2.0f }, 0.2f, glm::vec3{d(e), d(e), d(e)} } ) );
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.5f, -3.0f }, 0.2f, glm::vec3{d(e), d(e), d(e)} } ) );
+#endif
+}
